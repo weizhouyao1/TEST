@@ -1,0 +1,27 @@
+{
+  "projects": {
+    "default": "your-project-id"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": [
+    {
+      "target": "finance-app",
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        ".firebaserc",
+        "*.md",
+        "node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}

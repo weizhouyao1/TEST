@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订阅计划</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/pricing.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部导航 -->
+        <header class="header">
+            <h1>💰 选择适合你的计划</h1>
+            <p class="header-subtitle">开启财务管理之旅</p>
+        </header>
+
+        <!-- 导航菜单 -->
+        <nav class="nav-menu">
+            <button class="nav-btn" onclick="window.location.href='index.html'">
+                <span>📊</span> 回到应用
+            </button>
+            <button class="nav-btn" onclick="window.location.href='account.html'">
+                <span>👤</span> 我的账户
+            </button>
+            <button class="nav-btn" onclick="logout()">
+                <span>🚪</span> 退出登录
+            </button>
+        </nav>
+
+        <!-- 主内容 -->
+        <main class="main-content">
+            <!-- 计费周期切换 -->
+            <div class="billing-toggle">
+                <span>按月结算</span>
+                <button class="toggle-switch" id="billingToggle">
+                    <span class="toggle-slider"></span>
+                </button>
+                <span>按年结算 <span class="badge">省20%</span></span>
+            </div>
+
+            <!-- 定价卡片 -->
+            <div class="pricing-grid">
+                <!-- 免费版 -->
+                <div class="pricing-card">
+                    <div class="card-header">
+                        <h3>免费版</h3>
+                        <p class="price">¥0<span>/月</span></p>
+                    </div>
+                    <div class="card-body">
+                        <p class="description">无限期免费使用核心功能</p>
+                        <ul class="features">
+                            <li>✅ 基础收支记录</li>
+                            <li>✅ 基本数据统计</li>
+                            <li>✅ 简单分类管理</li>
+                            <li>❌ 高级报表分析</li>
+                            <li>❌ 投资组合管理</li>
+                            <li>❌ AI智能建议</li>
+                            <li>❌ 优先支持</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-secondary" onclick="switchPlan('free')">当前套餐</button>
+                    </div>
+                </div>
+
+                <!-- 专业版 -->
+                <div class="pricing-card featured">
+                    <div class="ribbon">最受欢迎</div>
+                    <div class="card-header">
+                        <h3>专业版</h3>
+                        <p class="price" id="proMonthPrice">¥9.9<span>/月</span></p>
+                        <p class="original-price" id="proYearlyInfo" style="display:none;">¥99/年（原价¥118.8）</p>
+                    </div>
+                    <div class="card-body">
+                        <p class="description">完整的财务管理工具</p>
+                        <ul class="features">
+                            <li>✅ 无限制收支记录</li>
+                            <li>✅ <strong>高级报表分析</strong></li>
+                            <li>✅ <strong>投资组合跟踪</strong></li>
+                            <li>✅ <strong>智能分类</strong></li>
+                            <li>✅ <strong>数据导出</strong></li>
+                            <li>✅ 优先客服支持</li>
+                            <li>✅ 月度财务报告</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary" id="proButton" onclick="subscribePlan('pro')">立即升级</button>
+                        <p class="try-text">7天免费试用，随时取消</p>
+                    </div>
+                </div>
+
+                <!-- 高级版 -->
+                <div class="pricing-card">
+                    <div class="card-header">
+                        <h3>企业版</h3>
+                        <p class="price" id="entMonthPrice">¥29.9<span>/月</span></p>
+                        <p class="original-price" id="entYearlyInfo" style="display:none;">¥299/年（原价¥358.8）</p>
+                    </div>
+                    <div class="card-body">
+                        <p class="description">专业财务管理解决方案</p>
+                        <ul class="features">
+                            <li>✅ 所有专业版功能</li>
+                            <li>✅ <strong>多账户管理</strong></li>
+                            <li>✅ <strong>家庭预算</strong></li>
+                            <li>✅ <strong>税务优化建议</strong></li>
+                            <li>✅ <strong>API接口</strong></li>
+                            <li>✅ 7×24小时支持</li>
+                            <li>✅ 专属客户经理</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary" id="entButton" onclick="subscribePlan('enterprise')">立即升级</button>
+                        <p class="try-text">7天免费试用，随时取消</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 对比表 -->
+            <div class="comparison-section">
+                <h2>功能对比</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>功能</th>
+                            <th>免费版</th>
+                            <th>专业版</th>
+                            <th>企业版</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>收支记录</td>
+                            <td>✅ 100条/月</td>
+                            <td>✅ 无限制</td>
+                            <td>✅ 无限制</td>
+                        </tr>
+                        <tr>
+                            <td>投资跟踪</td>
+                            <td>❌</td>
+                            <td>✅ 最多50个</td>
+                            <td>✅ 无限制</td>
+                        </tr>
+                        <tr>
+                            <td>报表分析</td>
+                            <td>✅ 基础</td>
+                            <td>✅ 高级</td>
+                            <td>✅ 企业级</td>
+                        </tr>
+                        <tr>
+                            <td>数据导出</td>
+                            <td>❌</td>
+                            <td>✅ CSV/PDF</td>
+                            <td>✅ 多格式</td>
+                        </tr>
+                        <tr>
+                            <td>家庭预算</td>
+                            <td>❌</td>
+                            <td>❌</td>
+                            <td>✅ 支持</td>
+                        </tr>
+                        <tr>
+                            <td>API接口</td>
+                            <td>❌</td>
+                            <td>❌</td>
+                            <td>✅ 支持</td>
+                        </tr>
+                        <tr>
+                            <td>客户支持</td>
+                            <td>社区论坛</td>
+                            <td>邮件支持</td>
+                            <td>7×24电话</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- FAQ -->
+            <div class="faq-section">
+                <h2>常见问题</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3>如何取消订阅？</h3>
+                        <p>随时可在账户设置中取消订阅，取消后你可以继续使用到期末日，无任何额外费用。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>7天试用期后会怎样？</h3>
+                        <p>试用期满后，系统会提醒你续费。如果未续费，账户将自动降级为免费版。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>支持哪些支付方式？</h3>
+                        <p>支持支付宝、微信支付、银联等多种支付方式，安全便捷。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>数据会被删除吗？</h3>
+                        <p>不会。取消订阅后，你的所有数据保留7天，可随时重新激活账户。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>能否更换订阅计划？</h3>
+                        <p>可以。随时升级或降级计划，系统自动按比例调整费用。</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>有什么保障承诺？</h3>
+                        <p>30天内不满意可申请全额退款，无任何问题。</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+    
+    <script src="js/firebase-config.js"></script>
+    <script src="js/pricing.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>财务管理App - 登录</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo">💰</div>
+            <h1>财务管理助手</h1>
+            <p class="subtitle">智能记录 · 数据分析 · 投资管理</p>
+
+            <!-- 登录标签 -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="login">登 录</button>
+                <button class="tab-btn" data-tab="register">注 册</button>
+            </div>
+
+            <!-- 登录表单 -->
+            <form id="loginForm" class="form-content active">
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="loginEmail" placeholder="请输入邮箱" required>
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="loginPassword" placeholder="请输入密码" required>
+                </div>
+                <button type="submit" class="btn-primary">登 录</button>
+                <div class="divider">或</div>
+                <button type="button" class="btn-social" id="wechatLogin">🎯 微信登录</button>
+                <button type="button" class="btn-social" id="alipayLogin">🔐 支付宝登录</button>
+                <div id="loginError" class="error-message"></div>
+            </form>
+
+            <!-- 注册表单 -->
+            <form id="registerForm" class="form-content">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="registerName" placeholder="3-20个字符" required>
+                </div>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="registerEmail" placeholder="请输入邮箱" required>
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="registerPassword" placeholder="至少8个字符" required>
+                </div>
+                <div class="form-group">
+                    <label>确认密码</label>
+                    <input type="password" id="registerConfirm" placeholder="再次输入密码" required>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="agreeTerms" required>
+                    <label for="agreeTerms">我已阅读并同意<a href="#">用户协议</a>和<a href="#">隐私政策</a></label>
+                </div>
+                <button type="submit" class="btn-primary">注 册</button>
+                <div id="registerError" class="error-message"></div>
+            </form>
+
+            <!-- 免费试用提示 -->
+            <div class="trial-banner">
+                <p>✨ 新用户享受<strong>7天免费试用</strong>，无需绑定支付方式</p>
+            </div>
+        </div>
+
+        <!-- 右侧信息 -->
+        <div class="info-panel">
+            <h2>为什么选择我们</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <h3>智能统计</h3>
+                    <p>实时分析收支数据，生成详细报表</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📈</div>
+                    <h3>投资管理</h3>
+                    <p>跟踪投资组合，计算收益率</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💡</div>
+                    <h3>智能建议</h3>
+                    <p>基于数据的理财建议和预警</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <h3>数据安全</h3>
+                    <p>银行级加密，数据永久保护</p>
+                </div>
+            </div>
+
+            <div class="pricing-preview">
+                <h3>订阅计划</h3>
+                <div class="price-item">
+                    <p><strong>基础版</strong> 免费</p>
+                    <small>体验核心功能</small>
+                </div>
+                <div class="price-item">
+                    <p><strong>专业版</strong> ¥9.9/月</p>
+                    <small>高级分析和投资管理</small>
+                </div>
+                <div class="price-item">
+                    <p><strong>年卡</strong> ¥99/年</p>
+                    <small>节省20%，长期最优选择</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+    
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

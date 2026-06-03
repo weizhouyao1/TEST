@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>财务管理应用</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Firebase SDK - Compat兼容版本 -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部导航 -->
+        <header class="header">
+            <h1>💰 我的财务管理</h1>
+            <div class="header-info">
+                <span class="vip-status" id="vipStatus" style="display: none;">🌟 尊贵会员 (创始人调试模式)</span>
+                <span class="date" id="currentDate"></span>
+            </div>
+        </header>
+
+        <!-- 导航菜单 -->
+        <nav class="nav-menu">
+            <button class="nav-btn active" data-tab="dashboard">
+                <span>📊</span> 仪表盘
+            </button>
+            <button class="nav-btn" data-tab="investment">
+                <span>�</span> 投资组合
+            </button>
+            <button class="nav-btn" data-tab="report">
+                <span>�</span> 报表分析
+            </button>
+            <button class="nav-btn" onclick="window.location.href='pricing.html'">
+                <span>💎</span> 升级
+            </button>
+            <button class="nav-btn" onclick="window.location.href='account.html'">
+                <span>👤</span> 我的账户
+            </button>
+            <button class="nav-btn" onclick="logout()">
+                <span>🚪</span> 退出
+            </button>
+        </nav>
+
+        <!-- 主容器 -->
+        <main class="main-content">
+            
+            <!-- 仪表盘 -->
+            <section class="tab-content active" id="dashboard">
+                <div class="dashboard-grid">
+                    <div class="card card-investment">
+                        <h3>📈 投资总值</h3>
+                        <p class="amount" id="investmentValue">¥0.00</p>
+                    </div>
+                    <div class="card card-balance">
+                        <h3>💎 投资数量</h3>
+                        <p class="amount" id="investmentCount">0</p>
+                    </div>
+                    <div class="card card-income">
+                        <h3>📊 总成本</h3>
+                        <p class="amount" id="investmentCost">¥0.00</p>
+                    </div>
+                </div>
+                
+                <div class="recent-transactions">
+                    <h2>最近投资</h2>
+                    <div id="recentList" class="transaction-list">
+                        <p class="empty-message">暂无投资记录</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 报表分析 -->
+            <section class="tab-content" id="report">
+                <div class="section-header">
+                    <h2>📈 报表分析</h2>
+                </div>
+
+                <div class="report-controls">
+                    <select id="reportMonth">
+                        <option value="current">当前月份</option>
+                        <option value="last3">最近3个月</option>
+                        <option value="last12">最近12个月</option>
+                    </select>
+                </div>
+
+                <div class="report-grid">
+                    <div class="report-card">
+                        <h3>月度汇总</h3>
+                        <div id="monthSummary" class="summary-content">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+
+                    <div class="report-card">
+                        <h3>支出分类占比</h3>
+                        <div id="categoryChart" style="height: 300px;">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+
+                    <div class="report-card">
+                        <h3>收支走势</h3>
+                        <div id="trendChart" style="height: 300px;">
+                            <p>加载中...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 投资组合 -->
+            <section class="tab-content" id="investment">
+                <div class="section-header">
+                    <h2>📍 投资组合管理</h2>
+                </div>
+
+                <div class="investment-form">
+                    <h3>添加投资</h3>
+                    <form id="investmentForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>资产类型</label>
+                                <select id="assetType" required>
+                                    <option value="">选择类型</option>
+                                    <option value="stock">股票</option>
+                                    <option value="fund">基金</option>
+                                    <option value="bond">债券</option>
+                                    <option value="crypto">加密货币</option>
+                                    <option value="real-estate">房产</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>资产名称</label>
+                                <input type="text" id="assetName" placeholder="如：阿里巴巴" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>购入价格</label>
+                                <input type="number" id="buyPrice" placeholder="0.00" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label>购入数量</label>
+                                <input type="number" id="quantity" placeholder="数量" min="0" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label>当前价格</label>
+                                <input type="number" id="currentPrice" placeholder="0.00" min="0" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>备注</label>
+                            <input type="text" id="investRemark" placeholder="添加备注（可选）">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">➕ 添加投资</button>
+                    </form>
+                </div>
+
+                <div class="investment-list">
+                    <h3>投资列表</h3>
+                    <div id="investmentListContainer" class="list-container">
+                        <p class="empty-message">暂无投资记录</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 登录/注册弹窗 -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-content">
+            <div class="auth-header">
+                <h2 id="authTitle">登录</h2>
+                <button class="auth-close" onclick="closeAuthModal()">×</button>
+            </div>
+            <div class="auth-body">
+                <!-- 登录表单 -->
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">邮箱</label>
+                        <input type="email" id="loginEmail" required placeholder="请输入邮箱">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">密码</label>
+                        <input type="password" id="loginPassword" required placeholder="请输入密码">
+                    </div>
+                    <button type="submit" class="auth-submit">登录</button>
+                    <p class="auth-switch-tip">没有账号？<a href="#" id="show-register-btn">立即注册</a></p>
+                </form>
+
+                <!-- 注册表单 -->
+                <form id="registerForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="registerEmail">邮箱</label>
+                        <input type="email" id="registerEmail" required placeholder="请输入邮箱">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">密码</label>
+                        <input type="password" id="registerPassword" required placeholder="请输入密码">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">确认密码</label>
+                        <input type="password" id="registerConfirmPassword" required placeholder="请再次输入密码">
+                    </div>
+                    <button type="submit" class="auth-submit">注册账户</button>
+                    <p class="auth-switch-tip">已有账号？<a href="#" id="show-login-btn">立即登录</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 未登录遮罩 -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-message">
+            <h2>🔐 为了您的资产隐私安全</h2>
+            <p>请先登录/注册</p>
+            <button class="login-btn" onclick="openAuthModal('login')">登录</button>
+            <button class="register-btn" onclick="openAuthModal('register')">注册</button>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

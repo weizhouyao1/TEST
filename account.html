@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的账户</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部导航 -->
+        <header class="header">
+            <h1>💰 我的账户</h1>
+        </header>
+
+        <!-- 导航菜单 -->
+        <nav class="nav-menu">
+            <button class="nav-btn" onclick="goBackToApp()">
+                <span>📊</span> 回到应用
+            </button>
+            <button class="nav-btn" onclick="window.location.href='pricing.html'">
+                <span>💳</span> 订阅计划
+            </button>
+            <button class="nav-btn active" onclick="window.location.href='account.html'">
+                <span>👤</span> 我的账户
+            </button>
+            <button class="nav-btn" onclick="logout()">
+                <span>🚪</span> 退出登录
+            </button>
+        </nav>
+
+        <!-- 主内容 -->
+        <main class="main-content">
+            <div class="account-grid">
+                <!-- 左侧菜单 -->
+                <aside class="account-sidebar">
+                    <div class="user-profile">
+                        <div class="avatar" id="userAvatar">👤</div>
+                        <h3 id="userName">用户名</h3>
+                        <p id="userEmail">user@example.com</p>
+                    </div>
+                    <nav class="account-menu">
+                        <button class="menu-item active" data-section="profile">
+                            <span>👤</span> 个人信息
+                        </button>
+                        <button class="menu-item" data-section="subscription">
+                            <span>💳</span> 订阅管理
+                        </button>
+                        <button class="menu-item" data-section="billing">
+                            <span>📄</span> 账单记录
+                        </button>
+                        <button class="menu-item" data-section="security">
+                            <span>🔒</span> 安全设置
+                        </button>
+                        <button class="menu-item" data-section="preferences">
+                            <span>⚙️</span> 偏好设置
+                        </button>
+                        <button class="menu-item" data-section="data">
+                            <span>📊</span> 数据管理
+                        </button>
+                    </nav>
+                </aside>
+
+                <!-- 右侧内容 -->
+                <div class="account-content">
+                    
+                    <!-- 个人信息 -->
+                    <section class="content-section active" id="profile">
+                        <h2>👤 个人信息</h2>
+                        <div class="form-section">
+                            <div class="form-group">
+                                <label>用户名</label>
+                                <input type="text" id="profileName" placeholder="输入用户名" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>邮箱</label>
+                                <input type="email" id="profileEmail" placeholder="你的邮箱" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>手机号（可选）</label>
+                                <input type="tel" id="profilePhone" placeholder="绑定手机号">
+                            </div>
+                            <div class="form-group">
+                                <label>真实姓名（可选）</label>
+                                <input type="text" id="profileRealName" placeholder="用于发票和支持">
+                            </div>
+                            <button class="btn btn-primary" onclick="updateProfile()">保存修改</button>
+                        </div>
+                    </section>
+
+                    <!-- 订阅管理 -->
+                    <section class="content-section" id="subscription">
+                        <h2>💳 订阅管理</h2>
+                        <div class="subscription-card">
+                            <div class="subscription-status">
+                                <h3 id="currentPlan">免费版</h3>
+                                <p id="planStatus" class="status-badge">激活中</p>
+                            </div>
+                            <div class="subscription-details">
+                                <div class="detail-item">
+                                    <span>订阅周期</span>
+                                    <strong id="subscriptionPeriod">N/A</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <span>有效期至</span>
+                                    <strong id="expiryDate">N/A</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <span>下次续费日</span>
+                                    <strong id="nextBillingDate">N/A</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <span>自动续费</span>
+                                    <strong id="autoRenew">已开启</strong>
+                                </div>
+                            </div>
+                            <div class="subscription-actions">
+                                <button class="btn btn-secondary" onclick="window.location.href='pricing.html'">
+                                    升级/降级计划
+                                </button>
+                                <button class="btn btn-danger" id="cancelBtn" onclick="cancelSubscription()" style="display:none;">
+                                    取消订阅
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 试用信息 -->
+                        <div id="trialInfo" class="trial-info">
+                            <h3>🎁 免费试用</h3>
+                            <div class="trial-bar">
+                                <div class="trial-progress" id="trialProgress"></div>
+                            </div>
+                            <p id="trialText">你有7天免费试用期，剩余 <strong id="trialDays">7</strong> 天</p>
+                            <p class="trial-note">试用期满后，需要升级为付费版本才能继续使用高级功能</p>
+                        </div>
+                    </section>
+
+                    <!-- 账单记录 -->
+                    <section class="content-section" id="billing">
+                        <h2>📄 账单记录</h2>
+                        <div class="billing-filters">
+                            <input type="date" id="filterStart" placeholder="开始日期">
+                            <input type="date" id="filterEnd" placeholder="结束日期">
+                            <button class="btn btn-secondary" onclick="filterBilling()">筛选</button>
+                        </div>
+                        <div class="billing-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>日期</th>
+                                        <th>订单ID</th>
+                                        <th>套餐</th>
+                                        <th>金额</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="billingList">
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; color: #999;">暂无账单</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="invoice-note">
+                            <p>💡 需要发票？<a href="#" onclick="requestInvoice()">点击申请</a></p>
+                        </div>
+                    </section>
+
+                    <!-- 安全设置 -->
+                    <section class="content-section" id="security">
+                        <h2>🔒 安全设置</h2>
+                        
+                        <div class="security-item">
+                            <h3>修改密码</h3>
+                            <div class="form-group">
+                                <label>当前密码</label>
+                                <input type="password" id="currentPassword" placeholder="输入当前密码">
+                            </div>
+                            <div class="form-group">
+                                <label>新密码</label>
+                                <input type="password" id="newPassword" placeholder="输入新密码">
+                            </div>
+                            <div class="form-group">
+                                <label>确认新密码</label>
+                                <input type="password" id="confirmPassword" placeholder="再次输入新密码">
+                            </div>
+                            <button class="btn btn-primary" onclick="changePassword()">更新密码</button>
+                        </div>
+
+                        <div class="security-item">
+                            <h3>二次验证</h3>
+                            <p>使用认证器应用获得额外的安全保护</p>
+                            <button class="btn btn-secondary" id="enable2FA">启用二次验证</button>
+                        </div>
+
+                        <div class="security-item">
+                            <h3>登录设备</h3>
+                            <div class="device-list">
+                                <div class="device-item">
+                                    <span>💻 Windows - Chrome</span>
+                                    <small>最后访问：今天 14:30</small>
+                                    <button class="btn btn-danger btn-sm">移除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 偏好设置 -->
+                    <section class="content-section" id="preferences">
+                        <h2>⚙️ 偏好设置</h2>
+                        
+                        <div class="preference-item">
+                            <h3>通知设置</h3>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="emailNotification" checked>
+                                <span>邮件通知账单和提醒</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="smsNotification">
+                                <span>短信通知重要信息</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="appNotification" checked>
+                                <span>应用内通知</span>
+                            </label>
+                        </div>
+
+                        <div class="preference-item">
+                            <h3>数据同步</h3>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="autoSync" checked>
+                                <span>自动同步数据（跨设备）</span>
+                            </label>
+                            <p class="hint">启用后，你在任何设备上的修改都会自动同步</p>
+                        </div>
+
+                        <div class="preference-item">
+                            <h3>语言和地区</h3>
+                            <select id="language">
+                                <option value="zh-CN">简体中文</option>
+                                <option value="en-US">English</option>
+                                <option value="ja-JP">日本語</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="savePreferences()">保存设置</button>
+                    </section>
+
+                    <!-- 数据管理 -->
+                    <section class="content-section" id="data">
+                        <h2>📊 数据管理</h2>
+                        
+                        <div class="data-item">
+                            <h3>导出数据</h3>
+                            <p>下载你的所有财务数据，包括交易记录和投资信息</p>
+                            <button class="btn btn-secondary" onclick="exportData()">
+                                📥 导出为 JSON
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportCSV()">
+                                📊 导出为 CSV
+                            </button>
+                        </div>
+
+                        <div class="data-item">
+                            <h3>删除账户</h3>
+                            <p style="color: #f44336;">⚠️ 这是一个危险操作，将永久删除你的账户和所有数据，无法恢复</p>
+                            <button class="btn btn-danger" onclick="deleteAccount()">
+                                🗑️ 永久删除账户
+                            </button>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 通知 -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Firebase SDK - Compat兼容版本 -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/account.js"></script>
+    <script>
+        // 回到应用函数（避免重新加载页面）
+        function goBackToApp() {
+            // 使用history.back()返回，避免重新加载页面和触发股票价格请求
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // 如果没有历史记录，则直接跳转
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
